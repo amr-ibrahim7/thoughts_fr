@@ -74,3 +74,21 @@ export const apiFetchPostByUser = async (userId) => {
     return error.response.data;
   }
 };
+
+export const apiAddComment = async (postId, comment) => {
+  try {
+    const response = await API.post(`/posts/${postId}/comments`, { comment });
+    return response.data;
+  } catch (error) {
+    return error.response.data;
+  }
+};
+
+export const apiDeleteComment = async (postId, commentId) => {
+  try {
+    const response = await API.delete(`/posts/${postId}/comments/${commentId}`);
+    return response.data;
+  } catch (error) {
+    return error.response.data;
+  }
+};

@@ -1,16 +1,39 @@
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
+import { useAuth } from "@/context/AuthContext";
 import { usePost } from "@/context/postContext";
 import { formatDate } from "@/utils/dataUtil";
 import { getNameInitials } from "@/utils/stringUtil";
 import { getFormattedTime } from "@/utils/timeUtil";
-import { Clock9 } from "lucide-react";
-import React, { useEffect } from "react";
+import { Clock9, MessageCircle, Trash2 } from "lucide-react";
+import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router";
 
 const BlogDescription = () => {
   const { id } = useParams();
-  const { posts, post, fetchPost, fetchPosts, loading } = usePost();
+  const { user } = useAuth();
+  const {
+    posts,
+    post,
+    fetchPost,
+    fetchPosts,
+    loading,
+    addComment,
+    deleteComment,
+  } = usePost();
+  const [newComment, setNewComment] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
     if (id) {
@@ -23,6 +46,29 @@ const BlogDescription = () => {
       fetchPosts();
     }
   }, [posts]);
+
+  const handleAddComment = async (e) => {
+    e.preventDefault();
+    if (!newComment.trim() || !user) return;
+
+    setIsSubmitting(true);
+    try {
+      await addComment(id, newComment.trim());
+      setNewComment("");
+    } catch (error) {
+      console.error("Error adding comment:", error);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const handleDeleteComment = async (commentId) => {
+    try {
+      await deleteComment(id, commentId);
+    } catch (error) {
+      console.error("Error deleting comment:", error);
+    }
+  };
 
   if (loading)
     return (
@@ -66,7 +112,6 @@ const BlogDescription = () => {
           />
         </div>
         <div className="space-y-4 border-b pb-4">
-       
           <div className="space-y-3">
             {post?.category && (
               <span className="inline-flex items-center px-3 py-1.5 text-sm font-medium bg-gradient-to-r from-[#14293b] to-[#1e3a52] text-white rounded-full hover:from-[#1e3a52] hover:to-[#14293b] transition-all duration-300 shadow-md hover:shadow-lg transform hover:scale-105">
@@ -104,12 +149,138 @@ const BlogDescription = () => {
         </div>
       </div>
 
-
       <div className="mt-9 border-b pb-4">
-        <div className="prose prose-lg max-w-none text-gray-700  leading-relaxed">
+        <div className="prose prose-lg max-w-none text-gray-700 leading-relaxed">
           <div className="whitespace-pre-wrap break-words">
             {post?.content || "No description available."}
           </div>
+        </div>
+      </div>
+
+      <div className="mt-9">
+        <div className="flex items-center gap-2 mb-6">
+          <MessageCircle size={20} />
+          <h3 className="text-xl font-semibold">
+            Comments ({post?.comments?.length || 0})
+          </h3>
+        </div>
+
+        {user ? (
+          <div className="mb-8 p-4 bg-gray-50 rounded-lg">
+            <form onSubmit={handleAddComment} className="space-y-4">
+              <div className="flex items-start gap-3">
+                <Avatar className="size-8">
+                  <AvatarImage
+                    src={user?.profilePicture}
+                    className="object-cover w-full h-full"
+                  />
+                  <AvatarFallback>{getNameInitials(user?.name)}</AvatarFallback>
+                </Avatar>
+                <div className="flex-1">
+                  <textarea
+                    value={newComment}
+                    onChange={(e) => setNewComment(e.target.value)}
+                    placeholder="Write a comment..."
+                    className="w-full p-3 border border-gray-300 rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    rows="3"
+                    disabled={isSubmitting}
+                  />
+                </div>
+              </div>
+              <div className="flex justify-end">
+                <Button
+                  type="submit"
+                  disabled={!newComment.trim() || isSubmitting}
+                  className="bg-blue-800 hover:bg-blue-700"
+                >
+                  {isSubmitting ? "Publishing..." : "Comment"}
+                </Button>
+              </div>
+            </form>
+          </div>
+        ) : (
+          <div className="mb-8 p-4 bg-gray-50 rounded-lg text-center">
+            <p className="text-gray-600">
+              <Link to="/login" className="text-blue-800 hover:underline">
+                Login
+              </Link>{" "}
+              to add a comment
+            </p>
+          </div>
+        )}
+
+        <div className="space-y-4">
+          {post?.comments && post.comments.length > 0 ? (
+            post.comments.map((comment) => (
+              <div key={comment._id} className="p-4 bg-white border rounded-lg">
+                <div className="flex items-start justify-between gap-3">
+                  <div className="flex items-start gap-3 flex-1">
+                    <Avatar className="size-8">
+                      <AvatarImage
+                        src={comment.user?.profilePicture}
+                        className="object-cover w-full h-full"
+                      />
+                      <AvatarFallback>
+                        {getNameInitials(comment.user?.name || "Anonymous")}
+                      </AvatarFallback>
+                    </Avatar>
+                    <div className="flex-1">
+                      <div className="flex items-center gap-2 mb-1">
+                        <span className="font-medium text-sm">
+                          {comment.user?.name || "Anonymous"}
+                        </span>
+                        <span className="text-xs text-gray-500">
+                          {formatDate(comment.createdAt)}
+                        </span>
+                      </div>
+                      <p className="text-gray-700 whitespace-pre-wrap break-words">
+                        {comment.comment}
+                      </p>
+                    </div>
+                  </div>
+
+                  {user &&
+                    (user.id === comment.user?._id ||
+                      user.id === post.author._id) && (
+                      <AlertDialog>
+                        <AlertDialogTrigger asChild>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            className="text-red-500 hover:text-red-700 hover:bg-red-50"
+                          >
+                            <Trash2 size={16} />
+                          </Button>
+                        </AlertDialogTrigger>
+                        <AlertDialogContent>
+                          <AlertDialogHeader>
+                            <AlertDialogTitle>Delete Comment</AlertDialogTitle>
+                            <AlertDialogDescription>
+                              Are you sure you want to delete this comment? This
+                              action cannot be undone.
+                            </AlertDialogDescription>
+                          </AlertDialogHeader>
+                          <AlertDialogFooter>
+                            <AlertDialogCancel>Cancel</AlertDialogCancel>
+                            <AlertDialogAction
+                              onClick={() => handleDeleteComment(comment._id)}
+                              className="bg-red-600 hover:bg-red-700"
+                            >
+                              Delete
+                            </AlertDialogAction>
+                          </AlertDialogFooter>
+                        </AlertDialogContent>
+                      </AlertDialog>
+                    )}
+                </div>
+              </div>
+            ))
+          ) : (
+            <div className="text-center py-8 text-gray-500">
+              <MessageCircle size={48} className="mx-auto mb-2 opacity-50" />
+              <p>No comments yet. Be the first to comment!</p>
+            </div>
+          )}
         </div>
       </div>
 

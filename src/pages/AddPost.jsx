@@ -80,7 +80,7 @@ const AddPost = () => {
               <Input
                 id="title"
                 type="text"
-                placeholder="Enter an engaging title for your blog post..."
+                placeholder="Enter a title .."
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
                 className="text-lg p-4 border-2 focus:border-blue-500 transition-colors"
@@ -168,7 +168,7 @@ const AddPost = () => {
               </Label>
               <Textarea
                 id="content"
-                placeholder="Write your blog content here... Share your ideas, experiences, and insights with your readers."
+                placeholder="Write your blog content here.."
                 value={content}
                 onChange={(e) => setContent(e.target.value)}
                 className="min-h-[300px] text-base p-4 border-2 focus:border-blue-500 transition-colors resize-none"

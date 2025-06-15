@@ -1,6 +1,8 @@
 import { createContext, useContext, useState } from "react";
 import {
+  apiAddComment,
   apiCreatePost,
+  apiDeleteComment,
   apiDeletePost,
   apiFetchPost,
   apiFetchPostByCategory,
@@ -155,6 +157,63 @@ export const PostProvider = ({ children }) => {
     }
   };
 
+  const addComment = async (postId, comment) => {
+    setError(null);
+    try {
+      const response = await apiAddComment(postId, comment);
+      if (response.status === "success") {
+        setPosts(
+          posts.map((p) =>
+            p._id === postId ? { ...p, comments: response.data } : p
+          )
+        );
+
+        if (post && post._id === postId) {
+          setPost({ ...post, comments: response.data });
+        }
+      }
+      return response;
+    } catch (error) {
+      console.error(error);
+      setError(error.message || "Failed to add comment");
+      throw error;
+    }
+  };
+
+  const deleteComment = async (postId, commentId) => {
+    setError(null);
+    try {
+      const response = await apiDeleteComment(postId, commentId);
+      if (response.status === "success") {
+        setPosts(
+          posts.map((p) =>
+            p._id === postId
+              ? {
+                  ...p,
+                  comments: p.comments.filter((c) => c._id !== commentId),
+                }
+              : p
+          )
+        );
+
+       
+        if (post && post._id === postId) {
+          setPost({
+            ...post,
+            comments: post.comments.filter((c) => c._id !== commentId),
+          });
+        }
+      }
+      return response;
+    } catch (error) {
+      console.error(error);
+      setError(error.message || "Failed to delete comment");
+      throw error;
+    }
+  };
+
+ 
+
   return (
     <postContext.Provider
       value={{
@@ -171,6 +230,8 @@ export const PostProvider = ({ children }) => {
         deletePost,
         fetchByCategory,
         fetchByUser,
+        addComment,
+        deleteComment,
       }}
     >
       {children}
