@@ -20,7 +20,7 @@ import { Clock9, MessageCircle, Trash2 } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router";
 
-const BlogDescription = () => {
+const PostDescription = () => {
   const { id } = useParams();
   const { user } = useAuth();
   const {
@@ -295,4 +295,4 @@ const BlogDescription = () => {
   );
 };
 
-export default BlogDescription;
+export default PostDescription;

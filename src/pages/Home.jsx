@@ -153,7 +153,7 @@ const Home = () => {
                       </div>
 
                       <Link
-                        to={`/blog/${post._id}`}
+                        to={`/post/${post._id}`}
                         onClick={ScrollToTop}
                         className="block"
                       >
@@ -171,7 +171,7 @@ const Home = () => {
                             : "No description available."}
                         </p>
                       </div>
-                      <Link to={`/blog/${post._id}`} onClick={ScrollToTop}>
+                      <Link to={`/post/${post._id}`} onClick={ScrollToTop}>
                         <div className="relative group">
                           <img
                             src={post.thumbnail}

@@ -12,10 +12,10 @@ import {
 import { useAuth } from "@/context/AuthContext";
 import { usePost } from "@/context/postContext";
 import { FileEditIcon, Trash2 } from "lucide-react";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router";
 
-const MyBlogs = () => {
+const MyPosts = () => {
   const { user } = useAuth();
   const { userPosts, fetchByUser, deletePost, loading } = usePost();
 
@@ -81,7 +81,7 @@ const MyBlogs = () => {
                   </div>
                   <div className="flex-1 flex flex-col md:flex-row justify-between gap-2 md:gap-10">
                     <div className="space-y-2">
-                      <Link to={`/blog/${post._id}`} onClick={ScrollToTop}>
+                      <Link to={`/post/${post._id}`} onClick={ScrollToTop}>
                         <h2 className="inline md:text-xl font-semibold text-gray-900 line-clamp-2 leading-5 hover:underline hover:underline-offset-2">
                           {post.title}
                         </h2>
@@ -98,7 +98,7 @@ const MyBlogs = () => {
                       </span>
                     </div>
                     <div className="flex items-center gap-2 md:gap-6">
-                      <Link to={`/editblog/${post._id}`}>
+                      <Link to={`/editpost/${post._id}`}>
                         <FileEditIcon />
                       </Link>
                       <AlertDialog>
@@ -143,4 +143,4 @@ const MyBlogs = () => {
   );
 };
 
-export default MyBlogs;
+export default MyPosts;

@@ -162,7 +162,7 @@ const Profile = () => {
                     </div>
 
                     <Link
-                      to={`/blog/${post._id}`}
+                      to={`/post/${post._id}`}
                       onClick={ScrollToTop}
                       className="block mb-2"
                     >

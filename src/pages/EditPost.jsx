@@ -70,7 +70,7 @@ const EditPost = () => {
 
     try {
       await updatePost(post._id, formData);
-      navigate("/myblogs");
+      navigate("/myposts");
     } catch (error) {
       console.error(error);
     }

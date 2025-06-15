@@ -64,7 +64,7 @@ export default function Nav() {
                 <DropdownMenuLabel>My Account</DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DropdownMenuGroup>
-                  <Link to="/myblogs">
+                  <Link to="/myposts">
                     <DropdownMenuItem onClick={ScrollToTop}>
                       My Blogs
                     </DropdownMenuItem>

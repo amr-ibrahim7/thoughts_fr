@@ -2,12 +2,12 @@ import { Route, Routes } from "react-router";
 import Nav from "./components/Nav";
 import ScrollToTop from "./components/ScrollToTop";
 import AddPost from "./pages/AddPost";
-import BlogDescription from "./pages/BlogDescription";
 import EditPost from "./pages/EditPost";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
-import MyBlogs from "./pages/MyBlogs";
+import MyPosts from "./pages/MyPosts";
 import NotFound from "./pages/NotFound";
+import PostDescription from "./pages/PostDescription";
 import Profile from "./pages/Profile";
 import SignUp from "./pages/Signup";
 import PrivateRoute from "./routes/PrivateRoute";
@@ -46,7 +46,7 @@ function App() {
           }
         />
         <Route
-          path="/editblog/:id"
+          path="/editpost/:id"
           element={
             <PrivateRoute>
               <EditPost />
@@ -62,15 +62,15 @@ function App() {
           }
         />
         <Route
-          path="/myblogs"
+          path="/myposts"
           element={
             <PrivateRoute>
-              <MyBlogs />
+              <MyPosts />
             </PrivateRoute>
           }
         />
 
-        <Route path="/blog/:id" element={<BlogDescription />} />
+        <Route path="/post/:id" element={<PostDescription />} />
 
         <Route path="*" element={<NotFound />} />
       </Routes>
