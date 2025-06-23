@@ -6,9 +6,11 @@ import { AuthProvider } from "./context/AuthContext";
 import { PostProvider } from "./context/postContext";
 import { UserProvider } from "./context/userContext";
 import "./index.css";
+import { ThemeProvider } from "./context/ThemeProvider";
 
 createRoot(document.getElementById("root")).render(
   // <StrictMode>
+      <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
   <AuthProvider>
     <UserProvider>
       <PostProvider>
@@ -18,5 +20,6 @@ createRoot(document.getElementById("root")).render(
       </PostProvider>
     </UserProvider>
   </AuthProvider>
+      </ThemeProvider>
   // </StrictMode>,
 );
