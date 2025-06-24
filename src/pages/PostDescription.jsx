@@ -16,7 +16,7 @@ import { usePost } from "@/context/postContext";
 import { formatDate } from "@/utils/dataUtil";
 import { getNameInitials } from "@/utils/stringUtil";
 import { getFormattedTime } from "@/utils/timeUtil";
-import { Clock9, MessageCircle, Trash2 } from "lucide-react";
+import { Clock9, MessageCircle, Trash2, ArrowLeft, User, Calendar } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router";
 
@@ -72,25 +72,30 @@ const PostDescription = () => {
 
   if (loading)
     return (
-      <div className="flex justify-center items-center h-[80vh]">
-        <div className="size-16 rounded-full border-[10px] border-gray-300 border-r-blue-800 animate-spin"></div>
+      <div className="min-h-screen bg-background text-foreground transition-colors duration-300">
+        <div className="flex justify-center items-center h-[80vh]">
+          <div className="w-16 h-16 border-4 border-primary/30 border-t-primary rounded-full animate-spin"></div>
+        </div>
       </div>
     );
 
   if ((!loading && !post) || !post.author)
     return (
-      <div className="flex flex-col items-center gap-7 justify-center h-dvh p-5">
-        <h1 className="text-9xl font-bold">404</h1>
-        <h3 className="text-3xl font-bold">Page Not Found</h3>
-        <p className="text-lg text-center md:w-1/2">
-          We are very sorry for the inconvinience. Its look like you're trying
-          to acces a page that has been deleted or never even existed.
-        </p>
-        <Link to="/">
-          <Button className="bg-blue-800 hover:bg-blue-700">
-            Back to Home
-          </Button>
-        </Link>
+      <div className="min-h-screen bg-background text-foreground transition-colors duration-300">
+        <div className="flex flex-col items-center gap-7 justify-center h-dvh p-5">
+          <h1 className="text-9xl font-bold bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">404</h1>
+          <h3 className="text-3xl font-bold text-foreground">Page Not Found</h3>
+          <p className="text-lg text-center md:w-1/2 text-muted-foreground leading-relaxed">
+            We are very sorry for the inconvenience. It looks like you're trying
+            to access a page that has been deleted or never even existed.
+          </p>
+          <Link to="/">
+            <Button className="px-6 py-3 bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 text-primary-foreground transition-all duration-300 shadow-lg hover:shadow-xl rounded-xl">
+              <ArrowLeft className="w-4 h-4 mr-2" />
+              Back to Home
+            </Button>
+          </Link>
+        </div>
       </div>
     );
 
@@ -102,194 +107,260 @@ const PostDescription = () => {
   };
 
   return (
-    <div className="container mx-auto px-5 lg:px-32 py-10">
-      <div className="space-y-12">
-        <div className="w-full h-[200px] md:h-[400px] lg:h-[500px] bg-cover bg-center overflow-hidden">
-          <img
-            src={post?.thumbnail}
-            alt={post?.title}
-            className="object-cover object-top w-full h-full"
-          />
-        </div>
-        <div className="space-y-4 border-b pb-4">
-          <div className="space-y-3">
-            {post?.category && (
-              <span className="inline-flex items-center px-3 py-1.5 text-sm font-medium bg-gradient-to-r from-[#14293b] to-[#1e3a52] text-white rounded-full hover:from-[#1e3a52] hover:to-[#14293b] transition-all duration-300 shadow-md hover:shadow-lg transform hover:scale-105">
-                #{post.category}
-              </span>
-            )}
-            <h2 className="text-3xl md:text-4xl font-bold md:leading-normal">
-              {post?.title}
-            </h2>
-          </div>
+    <div className="min-h-screen bg-background text-foreground transition-colors duration-300">
+      <div className="container mx-auto px-6 md:px-12 lg:px-16 py-8">
+        <div className="max-w-5xl mx-auto space-y-12">
+          
+          {/* Hero Image Section */}
+          <section className="relative w-full h-[300px] md:h-[500px] lg:h-[600px] rounded-3xl overflow-hidden shadow-2xl">
+            <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent z-10"></div>
+            <img
+              src={post?.thumbnail}
+              alt={post?.title}
+              className="object-cover object-center w-full h-full transition-transform duration-300 hover:scale-105"
+            />
+          </section>
 
-          <div className="flex flex-col md:flex-row gap-7 justify-between mt-4">
-            <div className="flex items-center gap-4">
-              <Avatar className="size-7 md:size-12">
-                <AvatarImage
-                  src={post?.author.profilePicture}
-                  className="object-cover w-full h-full"
-                />
-                <AvatarFallback>
-                  {getNameInitials(post?.author.name)}
-                </AvatarFallback>
-              </Avatar>
-
-              <span className="text-sm">
-                <p>Published by</p>
-                <p className="text-base font-medium">{post?.author.name}</p>
-              </span>
+          {/* Header Section */}
+          <section className="space-y-8">
+            <div className="space-y-6">
+              {post?.category && (
+                <div className="inline-flex items-center px-4 py-2 text-sm font-medium bg-gradient-to-r from-primary/10 to-primary/20 text-primary rounded-full border border-primary/20 backdrop-blur-sm">
+                  <span className="w-2 h-2 bg-primary rounded-full mr-2"></span>
+                  #{post.category}
+                </div>
+              )}
+              
+              <div>
+                <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-foreground mb-4 leading-tight">
+                  {post?.title}
+                </h1>
+                <div className="flex-1 h-px bg-gradient-to-r from-primary/50 to-transparent mb-6"></div>
+              </div>
             </div>
-            <p className="flex items-center gap-1 text-sm text-neutral-500 ">
-              Published on {formatDate(post?.createdAt)}
-              <Clock9 size={14} strokeWidth={3} />
-              {getFormattedTime(post?.createdAt)}
-            </p>
-          </div>
-        </div>
-      </div>
 
-      <div className="mt-9 border-b pb-4">
-        <div className="prose prose-lg max-w-none text-gray-700 leading-relaxed">
-          <div className="whitespace-pre-wrap break-words">
-            {post?.content || "No description available."}
-          </div>
-        </div>
-      </div>
-
-      <div className="mt-9">
-        <div className="flex items-center gap-2 mb-6">
-          <MessageCircle size={20} />
-          <h3 className="text-xl font-semibold">
-            Comments ({post?.comments?.length || 0})
-          </h3>
-        </div>
-
-        {user ? (
-          <div className="mb-8 p-4 bg-gray-50 rounded-lg">
-            <form onSubmit={handleAddComment} className="space-y-4">
-              <div className="flex items-start gap-3">
-                <Avatar className="size-8">
-                  <AvatarImage
-                    src={user?.profilePicture}
-                    className="object-cover w-full h-full"
-                  />
-                  <AvatarFallback>{getNameInitials(user?.name)}</AvatarFallback>
-                </Avatar>
-                <div className="flex-1">
-                  <textarea
-                    value={newComment}
-                    onChange={(e) => setNewComment(e.target.value)}
-                    placeholder="Write a comment..."
-                    className="w-full p-3 border border-gray-300 rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    rows="3"
-                    disabled={isSubmitting}
-                  />
+            {/* Author and Date Info */}
+            <div className="flex flex-col lg:flex-row gap-6 lg:gap-12 justify-between">
+              <div className="flex items-center gap-4">
+                <div className="flex items-center justify-center w-12 h-12 rounded-xl bg-primary/10 border border-primary/20">
+                  <User className="w-6 h-6 text-primary" />
+                </div>
+                <div className="flex items-center gap-4">
+                  <Avatar className="w-12 h-12 ring-2 ring-primary/20">
+                    <AvatarImage
+                      src={post?.author.profilePicture}
+                      className="object-cover w-full h-full"
+                    />
+                    <AvatarFallback className="bg-primary/10 text-primary font-semibold">
+                      {getNameInitials(post?.author.name)}
+                    </AvatarFallback>
+                  </Avatar>
+                  <div>
+                    <p className="text-sm text-muted-foreground">Published by</p>
+                    <p className="text-lg font-semibold text-foreground">{post?.author.name}</p>
+                  </div>
                 </div>
               </div>
-              <div className="flex justify-end">
-                <Button
-                  type="submit"
-                  disabled={!newComment.trim() || isSubmitting}
-                  className="bg-blue-800 hover:bg-blue-700"
-                >
-                  {isSubmitting ? "Publishing..." : "Comment"}
-                </Button>
-              </div>
-            </form>
-          </div>
-        ) : (
-          <div className="mb-8 p-4 bg-gray-50 rounded-lg text-center">
-            <p className="text-gray-600">
-              <Link to="/login" className="text-blue-800 hover:underline">
-                Login
-              </Link>{" "}
-              to add a comment
-            </p>
-          </div>
-        )}
 
-        <div className="space-y-4">
-          {post?.comments && post.comments.length > 0 ? (
-            post.comments.map((comment) => (
-              <div key={comment._id} className="p-4 bg-white border rounded-lg">
-                <div className="flex items-start justify-between gap-3">
-                  <div className="flex items-start gap-3 flex-1">
-                    <Avatar className="size-8">
+              <div className="flex items-center gap-3">
+                <div className="flex items-center justify-center w-12 h-12 rounded-xl bg-primary/10 border border-primary/20">
+                  <Calendar className="w-6 h-6 text-primary" />
+                </div>
+                <div className="flex items-center gap-2 text-muted-foreground">
+                  <div>
+                    <p className="text-sm">Published on</p>
+                    <p className="text-base font-medium flex items-center gap-2">
+                      {formatDate(post?.createdAt)}
+                      <Clock9 size={16} />
+                      {getFormattedTime(post?.createdAt)}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          {/* Content Section */}
+          <section className="space-y-6">
+            <div className="flex items-center gap-3 mb-6">
+              <div className="flex items-center justify-center w-12 h-12 rounded-xl bg-primary/10 border border-primary/20">
+                <MessageCircle className="w-6 h-6 text-primary" />
+              </div>
+              <div>
+                <h2 className="text-2xl font-bold text-foreground">Content</h2>
+                <p className="text-sm text-muted-foreground">Read the full article</p>
+              </div>
+            </div>
+
+            <div className="bg-background/50 border-2 border-border/50 rounded-2xl p-8 md:p-12">
+              <div className="prose prose-lg max-w-none text-foreground leading-relaxed">
+                <div className="whitespace-pre-wrap break-words text-lg leading-relaxed">
+                  {post?.content || "No description available."}
+                </div>
+              </div>
+            </div>
+          </section>
+
+          {/* Comments Section */}
+          <section className="space-y-8">
+            <div className="flex items-center gap-3 mb-6">
+              <div className="flex items-center justify-center w-12 h-12 rounded-xl bg-primary/10 border border-primary/20">
+                <MessageCircle className="w-6 h-6 text-primary" />
+              </div>
+              <div>
+                <h2 className="text-2xl font-bold text-foreground">Comments</h2>
+                <p className="text-sm text-muted-foreground">
+                  {post?.comments?.length || 0} {post?.comments?.length === 1 ? 'comment' : 'comments'}
+                </p>
+              </div>
+            </div>
+
+            {/* Add Comment Form */}
+            {user ? (
+              <div className="bg-background/50 border-2 border-border/50 rounded-2xl p-6">
+                <form onSubmit={handleAddComment} className="space-y-4">
+                  <div className="flex items-start gap-4">
+                    <Avatar className="w-10 h-10 ring-2 ring-primary/20">
                       <AvatarImage
-                        src={comment.user?.profilePicture}
+                        src={user?.profilePicture}
                         className="object-cover w-full h-full"
                       />
-                      <AvatarFallback>
-                        {getNameInitials(comment.user?.name || "Anonymous")}
+                      <AvatarFallback className="bg-primary/10 text-primary font-semibold">
+                        {getNameInitials(user?.name)}
                       </AvatarFallback>
                     </Avatar>
                     <div className="flex-1">
-                      <div className="flex items-center gap-2 mb-1">
-                        <span className="font-medium text-sm">
-                          {comment.user?.name || "Anonymous"}
-                        </span>
-                        <span className="text-xs text-gray-500">
-                          {formatDate(comment.createdAt)}
-                        </span>
-                      </div>
-                      <p className="text-gray-700 whitespace-pre-wrap break-words">
-                        {comment.comment}
-                      </p>
+                      <textarea
+                        value={newComment}
+                        onChange={(e) => setNewComment(e.target.value)}
+                        placeholder="Share your thoughts on this post..."
+                        className="w-full p-4 bg-background/50 border-2 border-border/50 focus:border-primary/50 focus:ring-2 focus:ring-primary/20 transition-all duration-300 resize-none rounded-xl text-base leading-relaxed min-h-[120px]"
+                        disabled={isSubmitting}
+                      />
                     </div>
                   </div>
-
-                  {user &&
-                    (user.id === comment.user?._id ||
-                      user.id === post.author._id) && (
-                      <AlertDialog>
-                        <AlertDialogTrigger asChild>
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            className="text-red-500 hover:text-red-700 hover:bg-red-50"
-                          >
-                            <Trash2 size={16} />
-                          </Button>
-                        </AlertDialogTrigger>
-                        <AlertDialogContent>
-                          <AlertDialogHeader>
-                            <AlertDialogTitle>Delete Comment</AlertDialogTitle>
-                            <AlertDialogDescription>
-                              Are you sure you want to delete this comment? This
-                              action cannot be undone.
-                            </AlertDialogDescription>
-                          </AlertDialogHeader>
-                          <AlertDialogFooter>
-                            <AlertDialogCancel>Cancel</AlertDialogCancel>
-                            <AlertDialogAction
-                              onClick={() => handleDeleteComment(comment._id)}
-                              className="bg-red-600 hover:bg-red-700"
-                            >
-                              Delete
-                            </AlertDialogAction>
-                          </AlertDialogFooter>
-                        </AlertDialogContent>
-                      </AlertDialog>
-                    )}
-                </div>
+                  <div className="flex justify-end">
+                    <Button
+                      type="submit"
+                      disabled={!newComment.trim() || isSubmitting}
+                      className="px-6 py-3 bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 text-primary-foreground transition-all duration-300 shadow-lg hover:shadow-xl rounded-xl"
+                    >
+                      {isSubmitting ? (
+                        <div className="flex items-center gap-2">
+                          <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                          Publishing...
+                        </div>
+                      ) : (
+                        "Post Comment"
+                      )}
+                    </Button>
+                  </div>
+                </form>
               </div>
-            ))
-          ) : (
-            <div className="text-center py-8 text-gray-500">
-              <MessageCircle size={48} className="mx-auto mb-2 opacity-50" />
-              <p>No comments yet. Be the first to comment!</p>
-            </div>
-          )}
-        </div>
-      </div>
+            ) : (
+              <div className="bg-background/50 border-2 border-border/50 rounded-2xl p-6 text-center">
+                <p className="text-muted-foreground text-lg">
+                  <Link to="/login" className="text-primary hover:text-primary/80 font-semibold transition-colors duration-300">
+                    Login
+                  </Link>{" "}
+                  to join the conversation
+                </p>
+              </div>
+            )}
 
-      <div className="mt-9 flex justify-center">
-        <Link to="/" onClick={ScrollToTop}>
-          <Button className="bg-blue-800 hover:bg-blue-700 text-white">
-            Back to Home
-          </Button>
-        </Link>
+            {/* Comments List */}
+            <div className="space-y-4">
+              {post?.comments && post.comments.length > 0 ? (
+                post.comments.map((comment) => (
+                  <div key={comment._id} className="bg-background/50 border-2 border-border/50 rounded-2xl p-6 transition-all duration-300 hover:border-border/70">
+                    <div className="flex items-start justify-between gap-4">
+                      <div className="flex items-start gap-4 flex-1">
+                        <Avatar className="w-10 h-10 ring-2 ring-primary/20">
+                          <AvatarImage
+                            src={comment.user?.profilePicture}
+                            className="object-cover w-full h-full"
+                          />
+                          <AvatarFallback className="bg-primary/10 text-primary font-semibold">
+                            {getNameInitials(comment.user?.name || "Anonymous")}
+                          </AvatarFallback>
+                        </Avatar>
+                        <div className="flex-1">
+                          <div className="flex items-center gap-3 mb-2">
+                            <span className="font-semibold text-foreground">
+                              {comment.user?.name || "Anonymous"}
+                            </span>
+                            <span className="text-sm text-muted-foreground flex items-center gap-1">
+                              <Clock9 size={12} />
+                              {formatDate(comment.createdAt)}
+                            </span>
+                          </div>
+                          <p className="text-foreground whitespace-pre-wrap break-words leading-relaxed">
+                            {comment.comment}
+                          </p>
+                        </div>
+                      </div>
+
+                      {user &&
+                        (user.id === comment.user?._id ||
+                          user.id === post.author._id) && (
+                          <AlertDialog>
+                            <AlertDialogTrigger asChild>
+                              <Button
+                                variant="ghost"
+                                size="sm"
+                                className="text-destructive hover:text-destructive/80 hover:bg-destructive/10 transition-all duration-300 rounded-lg"
+                              >
+                                <Trash2 size={16} />
+                              </Button>
+                            </AlertDialogTrigger>
+                            <AlertDialogContent className="bg-background border border-border/50 rounded-2xl">
+                              <AlertDialogHeader>
+                                <AlertDialogTitle className="text-foreground">Delete Comment</AlertDialogTitle>
+                                <AlertDialogDescription className="text-muted-foreground">
+                                  Are you sure you want to delete this comment? This
+                                  action cannot be undone.
+                                </AlertDialogDescription>
+                              </AlertDialogHeader>
+                              <AlertDialogFooter>
+                                <AlertDialogCancel className="rounded-xl">Cancel</AlertDialogCancel>
+                                <AlertDialogAction
+                                  onClick={() => handleDeleteComment(comment._id)}
+                                  className="bg-destructive hover:bg-destructive/90 text-destructive-foreground rounded-xl"
+                                >
+                                  Delete
+                                </AlertDialogAction>
+                              </AlertDialogFooter>
+                            </AlertDialogContent>
+                          </AlertDialog>
+                        )}
+                    </div>
+                  </div>
+                ))
+              ) : (
+                <div className="text-center py-12 bg-background/30 rounded-2xl border-2 border-dashed border-border/50">
+                  <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-primary/10 border border-primary/20 flex items-center justify-center">
+                    <MessageCircle size={32} className="text-primary/50" />
+                  </div>
+                  <p className="text-xl font-medium text-muted-foreground">No comments yet</p>
+                  <p className="text-muted-foreground mt-1">Be the first to share your thoughts!</p>
+                </div>
+              )}
+            </div>
+          </section>
+
+          {/* Back to Home Button */}
+          <section className="pt-8 border-t border-border/50">
+            <div className="flex justify-center">
+              <Link to="/" onClick={ScrollToTop}>
+                <Button className="px-8 py-4 text-lg font-semibold bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 text-primary-foreground transition-all duration-300 shadow-lg hover:shadow-xl rounded-xl">
+                  <ArrowLeft className="w-5 h-5 mr-2" />
+                  Back to Home
+                </Button>
+              </Link>
+            </div>
+          </section>
+
+        </div>
       </div>
     </div>
   );
