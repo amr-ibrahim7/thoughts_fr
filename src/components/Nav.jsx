@@ -17,7 +17,6 @@ import logoLi from "../assets/whiteL.png";
 
 import { SquarePen, Sun, Moon, Monitor, User, BookOpen, LogOut } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
-// import { useTheme } from "..context/ThemeProvider";
 import { getNameInitials } from "../utils/stringUtil";
 import { useTheme } from "../context/ThemeProvider";
 
@@ -215,7 +214,7 @@ export default function Nav() {
                 asChild 
                 variant="outline"
                 size="sm"
-                className="hover:bg-accent hover:text-accent-foreground"
+                className="hover:bg-accent hover:text-accent-foreground text-chart-2"
               >
                 <Link to="/login" onClick={ScrollToTop}>
                   Login
