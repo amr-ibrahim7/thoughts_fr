@@ -8,8 +8,8 @@ const PublicRoute = ({ children }) => {
   if (loading)
     return (
       <div className="flex justify-center items-center h-[80vh]">
-        <div className="size-16 rounded-full border-[10px] border-gray-300 border-r-blue-800 animate-spin"></div>
-      </div>
+          <div className="w-16 h-16 border-4 border-primary/30 border-t-primary rounded-full animate-spin"></div>
+        </div>
     );
 
   return user ? <Navigate to="/" replace /> : children;

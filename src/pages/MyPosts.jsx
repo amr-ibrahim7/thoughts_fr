@@ -57,7 +57,7 @@ const MyPosts = () => {
           {/* Content Section */}
           <div className="space-y-8">
             {loading ? (
-              // Skeleton Loading
+              
               <div className="space-y-6">
                 {Array(3)
                   .fill(0)
@@ -97,7 +97,7 @@ const MyPosts = () => {
                   ))}
               </div>
             ) : userPosts.length > 0 ? (
-              // Posts List
+              
               <div className="space-y-6">
                 {userPosts.map((post) => (
                   <article
@@ -214,7 +214,7 @@ const MyPosts = () => {
                 ))}
               </div>
             ) : (
-              // Empty State
+              
               <div className="text-center py-16">
                 <div className="max-w-md mx-auto">
                   <div className="w-24 h-24 mx-auto mb-6 rounded-2xl bg-primary/10 border border-primary/20 flex items-center justify-center">

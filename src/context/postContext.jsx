@@ -196,7 +196,6 @@ export const PostProvider = ({ children }) => {
           )
         );
 
-       
         if (post && post._id === postId) {
           setPost({
             ...post,
@@ -212,12 +211,54 @@ export const PostProvider = ({ children }) => {
     }
   };
 
+  const [isSearching, setIsSearching] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [searchResults, setSearchResults] = useState([]);
+
  
+
+  const searchPosts = async (query, page = 1) => {
+  if (!query.trim()) {
+    setSearchResults([]);
+    setIsSearching(false);
+    return;
+  }
+
+  setIsSearching(true);
+  try {
+    const response = await apiFetchPosts(1, 100); 
+    const allPosts = response.posts || response;
+    const filtered = allPosts.filter(post => 
+      post.title?.toLowerCase().includes(query.toLowerCase()) ||
+      post.content?.toLowerCase().includes(query.toLowerCase()) ||
+      post.category?.toLowerCase().includes(query.toLowerCase()) ||
+      post.author?.name?.toLowerCase().includes(query.toLowerCase())
+    );
+    
+    setSearchResults(filtered);
+    return { posts: filtered };
+  } catch (error) {
+    console.error("Search failed:", error);
+  } finally {
+    setIsSearching(false);
+  }
+};
+  const clearSearch = () => {
+    setSearchQuery("");
+    setSearchResults([]);
+    setIsSearching(false);
+  };
 
   return (
     <postContext.Provider
       value={{
         posts,
+        searchResults,
+        searchPosts,
+        searchQuery,
+         setSearchQuery,
+        isSearching,
+        clearSearch,
         post,
         userPosts,
         categoryPosts,

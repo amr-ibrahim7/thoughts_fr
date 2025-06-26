@@ -20,7 +20,7 @@ export const AuthProvider = ({ children }) => {
           setUser(userProfile.data);
           setError(null);
         } catch (error) {
-          console.error("Failed to fetch user profile");
+          console.error("Failed to fetch user profile",error);
           setError("Failed to fetch user profile");
           logout();
         }
@@ -68,7 +68,7 @@ export const AuthProvider = ({ children }) => {
       setUser(null);
       window.location.href = "/login";
     } catch (error) {
-      console.error("Failed to logout");
+      console.error("Failed to logout",error);
       localStorage.removeItem("accessToken");
       setUser(null);
       window.location.href = "/login";

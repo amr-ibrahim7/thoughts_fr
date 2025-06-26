@@ -12,6 +12,7 @@ import Profile from "./pages/Profile";
 import SignUp from "./pages/Signup";
 import PrivateRoute from "./routes/PrivateRoute";
 import PublicRoute from "./routes/PublicRoute";
+import AddPostIcon from "./components/AddPostIcon";
 
 function App() {
   return (
@@ -74,6 +75,7 @@ function App() {
 
         <Route path="*" element={<NotFound />} />
       </Routes>
+       <AddPostIcon />
       <ScrollToTop />
     </>
   );

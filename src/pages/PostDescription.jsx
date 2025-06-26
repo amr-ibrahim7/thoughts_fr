@@ -251,7 +251,7 @@ const PostDescription = () => {
                           Publishing...
                         </div>
                       ) : (
-                        "Post Comment"
+                        "Comment"
                       )}
                     </Button>
                   </div>

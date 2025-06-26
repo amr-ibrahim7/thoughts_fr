@@ -15,19 +15,21 @@ import { useAuth } from "@/context/AuthContext";
 import { usePost } from "@/context/postContext";
 import { formatDate } from "@/utils/dataUtil";
 import { getNameInitials } from "@/utils/stringUtil";
-import { MessageCircle, Trash2, Calendar } from "lucide-react";
+import { MessageCircle, Trash2, Calendar, Search, BookOpen } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router";
 
 const Home = () => {
   const { user } = useAuth();
-  const { posts, fetchPosts, loading, addComment, deleteComment } = usePost();
+  const { posts, fetchPosts, loading, addComment, deleteComment,  searchResults, 
+  searchQuery,isSearching } = usePost();
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
 
   const [newComments, setNewComments] = useState({});
   const [isSubmitting, setIsSubmitting] = useState({});
   const [expandedComments, setExpandedComments] = useState({});
+  
 
   useEffect(() => {
     const loadPosts = async () => {
@@ -79,10 +81,84 @@ const Home = () => {
     });
   };
 
-  // Get the first post 
-  const featuredPost = posts.length > 0 ? posts[0] : null;
-  const remainingPosts = posts.slice(1);
 
+const displayPosts = searchQuery ? searchResults : posts;
+const featuredPost = displayPosts.length > 0 ? displayPosts[0] : null;
+const remainingPosts = displayPosts.slice(1);
+
+ if (isSearching) {
+    return (
+      <div className="min-h-screen bg-background text-foreground transition-colors duration-300">
+        <div className="container mx-auto px-6 md:px-12 lg:px-16 py-8">
+          <div className="max-w-6xl mx-auto">
+            {/* Header */}
+            <div className="mb-12">
+              <h1 className="text-5xl md:text-6xl font-bold text-foreground mb-4">
+                Blog
+              </h1>
+            </div>
+
+            {/* Search Loading State */}
+            <div className="flex flex-col items-center justify-center py-16">
+              <div className="relative">
+                <div className="w-16 h-16 border-4 border-primary/30 border-t-primary rounded-full animate-spin"></div>
+                <Search className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 h-6 w-6 text-primary" />
+              </div>
+              <div className="mt-6 text-center">
+                <h3 className="text-xl font-semibold text-foreground mb-2">
+                  Searching for "{searchQuery}"
+                </h3>
+                <p className="text-muted-foreground">
+                  Please wait while we find the best results for you...
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+   if (searchQuery && searchResults.length === 0 && !isSearching) {
+    return (
+      <div className="min-h-screen bg-background text-foreground transition-colors duration-300">
+        <div className="container mx-auto px-6 md:px-12 lg:px-16 py-8">
+          <div className="max-w-6xl mx-auto">
+            {/* Header */}
+            <div className="mb-12">
+              <h1 className="text-5xl md:text-6xl font-bold text-foreground mb-4">
+                Blog
+              </h1>
+            </div>
+
+            {/* No Search Results */}
+            <div className="flex flex-col items-center justify-center py-16">
+              <div className="w-24 h-24 bg-muted/50 rounded-full flex items-center justify-center mb-6">
+                <Search className="h-10 w-10 text-muted-foreground" />
+              </div>
+              <div className="text-center max-w-md">
+                <h3 className="text-2xl font-bold text-foreground mb-3">
+                  No Results Found
+                </h3>
+                <p className="text-muted-foreground text-lg mb-6">
+                  We couldn't find any posts matching "{searchQuery}". Try adjusting your search terms or explore our latest posts below.
+                </p>
+                <div className="flex gap-3 justify-center">
+                  <Button 
+                    onClick={() => window.location.reload()} 
+                    variant="outline"
+                    className="px-6 py-2"
+                  >
+                    <BookOpen className="w-4 h-4 mr-2" />
+                    Browse All Posts
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
   return (
     <div className="min-h-screen bg-background text-foreground transition-colors duration-300">
       <div className="container mx-auto px-6 md:px-12 lg:px-16 py-8">

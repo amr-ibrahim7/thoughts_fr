@@ -119,7 +119,6 @@ const Profile = () => {
       behavior: "smooth",
     });
   };
-
   return (
     <div className="min-h-screen bg-background text-foreground transition-colors duration-300">
       <div className="container mx-auto px-6 md:px-12 lg:px-16 py-8">
@@ -526,7 +525,7 @@ const Profile = () => {
                     ))}
                   </div>
                 ) : (
-                  // Empty State
+                  
                   <div className="text-center py-16">
                     <div className="max-w-md mx-auto">
                       <div className="w-24 h-24 mx-auto mb-6 rounded-2xl bg-primary/10 border border-primary/20 flex items-center justify-center">
