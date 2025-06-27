@@ -109,7 +109,6 @@ export default function Nav() {
           <div className="flex-1 max-w-2xl mx-4 hidden md:block">
             <form onSubmit={handleSearchSubmit} className="relative">
               <div className={`relative transition-all duration-300 ${isSearchFocused ? 'transform scale-105' : ''}`}>
-                {/* أظهر loading icon لو بيحصل search */}
                 {isSearching ? (
                   <Loader2 className="absolute left-4 top-1/2 transform -translate-y-1/2 h-4 w-4 text-primary animate-spin" />
                 ) : (
@@ -143,7 +142,7 @@ export default function Nav() {
           <div className="flex items-center space-x-2 flex-shrink-0">
             
             {/* mobile search */}
-            <div className="md:hidden">
+            {/* <div className="md:hidden">
               <Button 
                 variant="ghost" 
                 size="icon"
@@ -152,9 +151,7 @@ export default function Nav() {
                 <Search className="h-4 w-4" />
                 <span className="sr-only">Search</span>
               </Button>
-            </div>
-
-            {/* theme toggle */}
+            </div> */}
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button 
@@ -249,7 +246,6 @@ export default function Nav() {
                   <DropdownMenuSeparator className="bg-border/50" />
                   
                   <DropdownMenuGroup className="p-2">
-                    {/* mobile add post - only show on mobile */}
                     <div className="md:hidden">
                       <Link to="/addpost">
                         <DropdownMenuItem 
@@ -315,8 +311,6 @@ export default function Nav() {
             )}
           </div>
         </div>
-
-        {/* Mobile Search Bar */}
         <div className="md:hidden px-4 pb-4">
           <form onSubmit={handleSearchSubmit} className="relative">
             <div className={`relative transition-all duration-300 ${isSearchFocused ? 'transform scale-105' : ''}`}>

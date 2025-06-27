@@ -53,8 +53,6 @@ const SignUp = () => {
                 <CardDescription className="text-lg text-muted-foreground leading-relaxed">
                   Join our community and start sharing your stories
                 </CardDescription>
-                
-                {/* Decorative line */}
                 <div className="flex-1 h-px bg-gradient-to-r from-transparent via-primary/30 to-transparent mt-4"></div>
               </CardHeader>
               

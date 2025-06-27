@@ -91,7 +91,6 @@ const remainingPosts = displayPosts.slice(1);
       <div className="min-h-screen bg-background text-foreground transition-colors duration-300">
         <div className="container mx-auto px-6 md:px-12 lg:px-16 py-8">
           <div className="max-w-6xl mx-auto">
-            {/* Header */}
             <div className="mb-12">
               <h1 className="text-5xl md:text-6xl font-bold text-foreground mb-4">
                 Blog
@@ -130,7 +129,7 @@ const remainingPosts = displayPosts.slice(1);
               </h1>
             </div>
 
-            {/* No Search Results */}
+            {/* No Results */}
             <div className="flex flex-col items-center justify-center py-16">
               <div className="w-24 h-24 bg-muted/50 rounded-full flex items-center justify-center mb-6">
                 <Search className="h-10 w-10 text-muted-foreground" />
@@ -169,8 +168,6 @@ const remainingPosts = displayPosts.slice(1);
               Blog
             </h1>
           </div>
-
-          {/* Featured Post Section - Dynamic First Post */}
           {featuredPost && (
             <section className="mb-16">
               <div className="grid lg:grid-cols-2 gap-12 items-center py-8">
